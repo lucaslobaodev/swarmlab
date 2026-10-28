@@ -3,3 +3,4 @@ sandbox.*
 .venv/
 __pycache__/
 PROGRESS.md
+docs/fontes/
