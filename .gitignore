@@ -2,3 +2,4 @@ sandbox.*
 .env
 .venv/
 __pycache__/
+PROGRESS.md
