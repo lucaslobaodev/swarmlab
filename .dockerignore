@@ -1,0 +1,15 @@
+# só servem na máquina de desenvolvimento
+.git
+.venv
+.vscode
+CLAUDE.md
+README.md
+
+# gerados pelo Python
+**/__pycache__
+
+# segredos
+.env
+
+# quadro-negro do tutor
+sandbox.*
