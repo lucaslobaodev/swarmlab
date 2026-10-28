@@ -9,4 +9,6 @@ ENV UV_NO_DEV=1
 RUN uv sync --locked
 USER app
 COPY app ./app
+HEALTHCHECK --interval=30s --timeout=3s \
+CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:8000/health', timeout=2)" || exit 1
 CMD ["/swarmlab/.venv/bin/uvicorn","app.main:app", "--host","0.0.0.0","--port", "8000"]
