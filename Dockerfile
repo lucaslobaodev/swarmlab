@@ -1,13 +1,17 @@
-FROM python:3.14.10-slim-trixie
-RUN useradd app
-COPY --from=ghcr.io/astral-sh/uv:0.11.7 /uv /uvx /bin/
+# Stage Build
+FROM python:3.14.10-slim-trixie AS builder
 WORKDIR /swarmlab
+COPY --from=ghcr.io/astral-sh/uv:0.11.7 /uv /uvx /bin/
 COPY uv.lock pyproject.toml .
-# Disable development dependencies
 ENV UV_NO_DEV=1
-# Sync the project into a new environment, asserting the lockfile is up to date
 RUN uv sync --locked
+
+# Stage of Runtime
+FROM python:3.14.10-slim-trixie AS runtime
+RUN useradd app
 USER app
+WORKDIR /swarmlab
+COPY --from=builder /swarmlab/.venv /swarmlab/.venv
 COPY app ./app
 HEALTHCHECK --interval=30s --timeout=3s \
 CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:8000/health', timeout=2)" || exit 1
